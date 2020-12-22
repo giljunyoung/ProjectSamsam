@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- Namespaces 탭에서 mybatis-spring 체크해서 추가할 것. -->	
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 데이터 베이스 연결을 위한 설정 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" />
+		<property name="username" value="scott" />
+		<property name="password" value="123456" />
+	</bean>
+	
+	<!-- sqlSession 객체 생성 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> <!-- sqlSessionFactory로 bean 객체 생성 -->
+	<property name="dataSource" ref="dataSource" />	<!-- ref : 참조하겠다는 의미(dataSource를 참조) -->
+	<!-- name="typeAliasesPackage"
+		mybatis에서 resultType과 parameterType 사용시 bean 객체를 사용하려면 
+		패키지 경로 및 bean 클래스명까지 입력해야 한다.
+		하지만 alias 처리를 해주면 bean 클래스명만 입력하면 된다.
+	-->
+	<property name="typeAliasesPackage"		
+		value="com.project.samsam" />	<!-- 패키지 경로를 기술하면 MemberMapper.xml에서 패키지 경로를 생략하고 사용할 수 있다(MemberVO). -->
+	<!-- 
+	<property name="mapperLocations"
+		value="classpath*:/com/spring/mapper/MemberMapper.xml" //특정문서를 지정하는 방법.>
+	</property>
+	 -->
+	<!-- mapper관련 xml문서(ex: MemberMapper.xml)의 위치 지정 -->	
+	<property name="mapperLocations"	
+		value="classpath*:/com/spring/mapper/**/*.xml"></property> <!-- **/*.xml: com.spring.mapper 하위의 모든 .xml문서를를 포함하겠다는 의미. -->
+	</bean>
+	
+	<!-- sqlSession 객체를 관리하기 위해 사용 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg ref="sqlSessionFactory" />	<!--constructor-arg :생성자의 파라미터를 sqlSessionFactory로 사용하겠다는 의미  -->
+	</bean>
+	
+	<!-- mybatis mapper 설정 관련(사용시 Namespace 탭에서 mybatis-spring추가하기) -->
+	<!-- mapper 관련 인터페이스(ex:MamberMapper.java)를 찾기 위한 패키지 경로 설점함 -->
+	<mybatis-spring:scan base-package="com.spring.mapper" />
+	
+	<!-- SMTP 설정 : https://seonjyungjo.github.io/Spring-SMTP/ -->	
+	<!-- Gmail 사용 -->
+	<!-- Authentication failed 에러 발생시 구글 계정 -> 보안 -> 보안 수준이 낮은 앱의 엑세스애 대해
+	사용을 허가해주면 된다. -->
+	<!-- 
+	<bean id="mailSender"
+	class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="지메일 이메일 주소" />
+		<property name="password" value="지메일 패스워드" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.quitwait">false</prop>
+			</props>
+		</property>
+	</bean>
+	 -->
+	 
+	 <!-- Naver 사용 : smtp 사용가능하도록 설정확인 할것 -->
+	 <!-- 네이버 설정 : https://mail.naver.com/option/imap -->
+	 <bean id="mailSender"
+	 class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	 	<property name="host" value="smtp.naver.com" />
+	 	<property name="port" value="465" />
+	 	<property name="username" value="네이버 이메일 주소" />	<!-- 인증메일을 보내기 위한 주체 -->
+	 	<property name="password" value="네이버 이메일 패스워드" />
+	 	<property name="javaMailProperties">
+	 		<props>
+	 			<prop key="mail.smtp.starttls.enable">true</prop>
+	 			<prop key="mail.smtp.auth">true</prop>
+	 			<prop key="mail.smtps.ssl.checkserveridentity">true</prop>
+	 			<prop key="mail.smtps.ssl.trust">*</prop>
+	 			<prop key="mail.debug">true</prop>
+	 			<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+	 		</props>
+	 	</property>
+	 </bean>
+	 
+	 <!-- Daum 사용 : smtp 사용가능하도록 설정확인 할것 -->
+	 <!-- 다음 설정 : 
+	 https://mail.daum.net/?nil_profile=mini&nil_src=mail#setting/POP3IMAP
+	 <bean id="mailSender"
+	 class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	 	<property name="host" value="smtp.daum.com" />
+	 	<property name="port" value="465" />
+	 	<property name="username" value="한메일 이메일주소" />
+	 	<property name="password" value="한메일 패스워드" />
+	 	<property name="javaMailProperties">
+	 		<prop key="mail.smtp.starttls.enable">true</prop>
+	 		<prop key="mail.smtp.auth">true</prop>
+	 		<prop key="mail.smtps.ssl.checkserveridentity">true</prop>
+	 		<prop key="mail.smtps.ssl.trust">*</prop>
+	 		<prop key="mail.debug">true</prop>
+	 		<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+	 	</property>
+	 </bean>
+	  -->
+		
+</beans>
