@@ -11,7 +11,7 @@ public class AnimalApiUtil implements AnimalApi {
 	@Override
 	public StringBuilder getSido() throws Exception {
 		StringBuilder urlBuilder = new StringBuilder(baseUrl + "sido"); 
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + serviceKey);
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=5Ern8aw33VcOcSQOtvZctJL%2Fts0%2BlkWF44wrlicCom%2BtHN5GBj2nE2eYllAz5Zaq10sQ8LRzqFG4S5QgYLZvhg%3D%3D");
         
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
