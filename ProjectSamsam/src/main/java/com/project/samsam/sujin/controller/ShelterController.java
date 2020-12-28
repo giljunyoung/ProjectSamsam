@@ -30,6 +30,11 @@ public class ShelterController {
 		return "/sujin/shelter_list"; 
 	}
 	
+	@RequestMapping(value = "/abandonment_list", method = RequestMethod.GET)
+	public String abandonmentList() {
+		return "/sujin/abandonment_list";
+	}
+	
 	
 
 }

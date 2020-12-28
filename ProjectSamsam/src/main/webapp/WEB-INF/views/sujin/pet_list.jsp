@@ -8,12 +8,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>관리자페이지_책임분양 관리_상세보기</title>
+<title>보호소</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
 	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
 	crossorigin="anonymous">
-<script src="https://code.jquery .com/jquery-3.5.1.slim.min.js"
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 	crossorigin="anonymous"></script>
 <script
@@ -21,185 +21,124 @@
 	integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
 	crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="/resources/css/main/main.css">
 <style>
-ul, li {
-	list-style: none;
-}
 
-a {
-	text-decoration: none;
-	color: black;
-}
+	.tab-left, .tab-right {
+		display: inline-block;
+	    border: 1px solid black;
+	    padding: 10px 20px;
+	    width: 50%;
+	    box-sizing: border-box;
+	    position: relative;
+	    text-align: center;
+	    cursor: pointer;
+	}
+	
+	.tab-left {
+		float: left;
+	}
+	
+	.tab-right {
+		float: right;
+	}
 
-html,body {
-	margin : 0;
-	padding : 0;
-	height:120%
-}
 
-.wrap {
-	width: 1200px;
-	min-height: 100%;
-	margin: 0 auto;
-	position: relative;
-}
+	.pet-search-option {
+		border: 1px solid black;
+	    clear: both;
+	    height: 60px;
+	}
 
-.aside {
-	width: 300px;
-	postion: absolute;
-}
-
-.section {
-	left: 330px;
-	top: 100px;
-	width: 870px;
-	position: absolute;
-}
-
-.footer {
-	width: 1200px;
-	margin: 10px;
-	margin: 0 auto;
-}
 </style>
 </head>
+
 <body>
+
+	<div class="header1">
+		<a href="/"><img src="./resources/images/logo1.png" width=160px height=100px></a>
+	</div>
+
+	<hr width=1200px;>
+
+	<div class="header2">
+		<div class="row">
+			<form class="form-inline mt-2 mt-md-0">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+					class="form-control mr-sm-2" type="text" placeholder="검색어를 입력하세요."
+					aria-label="Search">
+				<button class="btn btn-outline-info my-2 my-sm-0" type="submit">검색</button>
+			</form>
+			<div class="col-md-7"></div>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a class="btn btn-outline-info" href="#">마이페이지</a>
+		</div>
+		<br> <br>
+		<table align="center">
+			<tr>
+				<th><h1>삼삼하개</h1></th>
+			</tr>
+		</table>
+		<hr width=1200px;>
+	</div>
+
+	<!-- 메뉴 -->
+	<div class="nav">
+		<nav class="nav nav-pills flex-column flex-sm-row">
+			<a class="flex-sm-fill text-sm-center nav-link active ml-1" href="#">분양</a>
+			<a class="flex-sm-fill text-sm-center nav-link active ml-1" href="#">보호소</a>
+			<a class="flex-sm-fill text-sm-center nav-link active ml-1" href="#">커뮤니티</a>
+			<a class="flex-sm-fill text-sm-center nav-link active ml-1" href="#">고객센터</a>
+		</nav>
+	</div>
+
+	<br>
+	<hr width=1200px;>
+	<br>
+
+	<!--  -->
 	<div class="wrap">
 		<div class="aside">
-			<div>
-				<center>
-					<br> <a href="/"><img src="./resources/images/logo2.png"
-						width="200" height="140"></a>
-				</center>
-			</div>
-			<br>
-			<br>
-			<br>
 			<ul class="list-group list-group-flush">
-				<li class="list-group-item"><a href="/">게시물 관리</a></li>
-				<li class="list-group-item"><a href="/">회원관리</a></li>
-				<li class="list-group-item"><a href="/">이용권 관리</a></li>
-				<li class="list-group-item"><a href="/">책임분양 관리</a></li>
+				<li class="list-group-item"><a href="/">보호소</a></li>
+				<li class="list-group-item"><a href="/">파양</a></li>
+				<li class="list-group-item"><a href="/">실종</a></li>
 			</ul>
 		</div>
+
+
 		<div class="section">
-			<div class="row">
-				<div class="col-md-10"></div>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a class="btn btn-outline-info" href="#">ADMIN</a>
+			<!-- 검색 카테고리 탭 -->
+			<div class="tab">
+				<div class="tab-left">
+					<a href="/sujin/pet_list" alt="보호 동물">보호 동물</a>
+				</div>
+				<div class="tab-right">
+					<a href="/sujin/shelter_list" alt="보호소 찾기">보호소 찾기</a>
+				</div>
 			</div>
-			<br>
-			<br>
-			<br>
-			<br>
-			<center>
-				<img src="./resources/images/강아지1.png" width=200 height=200>
-			</center>
-
-			<div class="row ml-1">
-				<div class="col-md-10">분양자 : 아이디</div>
-				<div>피분양자 : 아이디</div>
+			
+			
+			<!-- 보호 동물 검색 조건 팝업 -->
+			<!-- 디자인 보류 -->
+			<div class="pet-search-option">
+				<div class="location">
+					<span>모든 지역</span>
+				</div>
+				<div class="kind">
+					<span>모든 동물</span>
+				</div>
 			</div>
-			<br>
-
-
-			<table border="1" align="center" width=500>
-				<tr>
-					<th class="text-center">분양코드</th>
-					<th class="text-center">환급 계좌번호</th>
-				</tr>
-				<tr>
-					<td class="text-center">000000</td>
-					<td class="text-center">국민은행 111-1111-111111</td>
-				</tr>
-			</table>
-			<br>
-			<br>
-
-			<h4>책임분양 인증현황</h4>
-
-			<tr>
-				<td width=810px><br>
-					<table border="1" align="center">
-						<tr height="50px">
-							<td width="800px">
-								<div class="progress ml-2 mr-2">
-									<div class="progress-bar" role="progressbar"
-										style="width: 20%;" aria-valuenow="20" aria-valuemin="0"
-										aria-valuemax="100">1/6</div>
-								</div>
-							</td>
-						</tr>
-					</table> <br> <br>
-					<h4>책임분양 인증글 신청현황</h4>
-
-
-					<table>
-						<tr>
-							<table class="table table-sm">
-								<thead>
-									<tr>
-										<th scope="col" class="text-center">#</th>
-										<th scope="col" class="text-center" width=500>제목</th>
-										<th scope="col" class="text-center" width=100>작성일</th>
-										<th scope="col" class="text-center">검수</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row" class="text-center">1</th>
-										<td><a href="/">책임분양 합니다</a></td>
-										<td class="text-center">2020/12/20</td>
-										<td class="text-center">
-											<button type="button" class="btn btn-outline-primary btn-sm">인증</button>
-											&nbsp;
-											<button type="button" class="btn btn-outline-danger btn-sm">반려</button>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-							</td>
-					</table> <br>
-				<br>
-					<h4>인증글 내역</h4>
-					<table class="table table-sm">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col" class="text-center">분양코드</th>
-								<th scope="col" class="text-center">피분양자</th>
-								<th scope="col" class="text-center">분양동물 정보</th>
-								<th scope="col" class="text-center">책임비</th>
-								<th scope="col" class="text-center">작성일</th>
-								<th scope="col" class="text-center">상태</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td class="text-center"><a href="/">000000</a></td>
-								<td class="text-center">피분양자</td>
-								<td class="text-center">스피츠</td>
-								<td class="text-center">150,000</td>
-								<td class="text-center">2020/12/20</td>
-								<td class="text-center">검토중</td>
-							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td class="text-center"><a href="/">000000</a></td>
-								<td class="text-center">피분양자</td>
-								<td class="text-center">스피츠</td>
-								<td class="text-center">150,000</td>
-								<td class="text-center">2020/11/10</td>
-								<td class="text-center">인증완료</td>
-							</tr>
-						</tbody>
-					</table>
+			
+			<!-- 동물 리스트 -->			
+			<div class="pet-list-wrap">
+				${sido}
+			</div>
+		
 		</div>
-
-
-
+			
 	</div>
+
 	<div class="footer">
 		<hr>
 		<footer class="bg-white text-black small">
@@ -284,7 +223,6 @@ html,body {
 
 		</footer>
 	</div>
-
 
 </body>
 </html>
