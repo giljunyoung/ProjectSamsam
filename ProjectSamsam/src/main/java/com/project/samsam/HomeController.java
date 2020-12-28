@@ -33,6 +33,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "mypage_free_auth";
+//		return "mypage_free_auth";
+		return "index";
 	}
 }

@@ -11,7 +11,7 @@ public class AnimalApiUtil implements AnimalApi {
 	@Override
 	public StringBuilder getSido() throws Exception {
 		StringBuilder urlBuilder = new StringBuilder(baseUrl + "sido"); 
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + serviceKey);
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=5Ern8aw33VcOcSQOtvZctJL%2Fts0%2BlkWF44wrlicCom%2BtHN5GBj2nE2eYllAz5Zaq10sQ8LRzqFG4S5QgYLZvhg%3D%3D");
         
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -41,8 +41,33 @@ public class AnimalApiUtil implements AnimalApi {
 
 	@Override
 	public StringBuilder getSiGunGu(Integer upr_cd) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder urlBuilder = new StringBuilder(baseUrl + "sido"); 
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + serviceKey);
+        
+        URL url = new URL(urlBuilder.toString());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json");
+        System.out.println("Response code: " + conn.getResponseCode());
+        
+        BufferedReader rd;
+        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        } else {
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            sb.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+        System.out.println(sb.toString());
+        
+        
+		return sb;
 	}
 
 	@Override
