@@ -1,12 +1,14 @@
 package com.project.samsam.sujin.api;
 
+import java.util.ArrayList;
+
 public interface AnimalApi {
 	
 	String baseUrl = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/";
 	String serviceKey = "=5Ern8aw33VcOcSQOtvZctJL%2Fts0%2BlkWF44wrlicCom%2BtHN5GBj2nE2eYllAz5Zaq10sQ8LRzqFG4S5QgYLZvhg%3D%3D";
 
 	// 시도 
-	public StringBuilder getSido() throws Exception;
+	public ArrayList<Sido> getSido() throws Exception;
 	
 	// 시/군/구
 	public StringBuilder getSiGunGu(Integer upr_cd) throws Exception;
