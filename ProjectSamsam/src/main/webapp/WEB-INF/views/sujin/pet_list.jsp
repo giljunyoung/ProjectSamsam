@@ -56,7 +56,7 @@
 <body>
 
 	<div class="header1">
-		<a href="/"><img src="./resources/images/logo1.png" width=160px height=100px></a>
+		<a href="/"><img src="/resources/images/logo1.png" width=160px height=100px></a>
 	</div>
 
 	<hr width=1200px;>
@@ -95,6 +95,9 @@
 	<br>
 	<hr width=1200px;>
 	<br>
+	
+	<!-- modal -->
+	
 
 	<!--  -->
 	<div class="wrap">
@@ -131,8 +134,15 @@
 			</div>
 			
 			<!-- 동물 리스트 -->			
+
 			<div class="pet-list-wrap">
-				${sido}
+				<select name="sido" id="sido">
+					<option value="0" selected>모든 지역</option>
+					<c:forEach var="sido" items="${sido}" varStatus="status">
+					  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
+					</c:forEach>
+				</select>
+
 			</div>
 		
 		</div>

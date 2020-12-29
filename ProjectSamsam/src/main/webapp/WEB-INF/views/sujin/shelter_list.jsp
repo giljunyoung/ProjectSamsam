@@ -99,7 +99,7 @@ html,body {
 <body>
 
 	<div class="header1">
-		<a href="/"><img src="./resources/images/logo1.png" width=160px height=100px></a>
+		<a href="/"><img src="/resources/images/logo1.png" width=160px height=100px></a>
 	</div>
 
 	<hr width=1200px;>
