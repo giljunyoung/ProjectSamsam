@@ -49,6 +49,42 @@
 	    clear: both;
 	    height: 60px;
 	}
+	.modal-container{
+		
+	}
+	
+	
+	/* 펫 리스트 */
+	.pet-box {
+	    border: 1px solid black;
+    	height: 245px;
+	}
+	
+	.pet-img {
+		padding:  20px;
+		float: left;
+	}
+	
+	
+	.pet-box .pet-img, .pet-box .pet-content {
+		display: inline-block;
+	}
+	
+	.pet-box .pet-img img {
+		width: 350px;
+		height: 200px;
+	}
+	
+	.pet-content {
+		padding: 20px;
+	}
+	
+	.pet-content span {
+		display: block;
+		padding: 8px 3px;
+	}
+	
+
 
 </style>
 </head>
@@ -97,7 +133,9 @@
 	<br>
 	
 	<!-- modal -->
-	
+	<div class="modal-container">
+		<div class="modal"> </div>
+	</div>
 
 	<!--  -->
 	<div class="wrap">
@@ -133,17 +171,37 @@
 				</div>
 			</div>
 			
+			<select name="sido" id="sido">
+				<option value="0" selected>모든 지역</option>
+				<c:forEach var="sido" items="${sido}" varStatus="status">
+				  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
+				</c:forEach>
+			</select>
+			
+			
 			<!-- 동물 리스트 -->			
 
 			<div class="pet-list-wrap">
-				<select name="sido" id="sido">
-					<option value="0" selected>모든 지역</option>
-					<c:forEach var="sido" items="${sido}" varStatus="status">
-					  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
+			
+				<div class="">
+					<c:forEach var="animal" items="${animalList}" varStatus="status">
+						<div class="pet-box">
+							<div class="pet-img">
+							  <img src="${animal.filename }" alt="img" />
+							</div>
+							<div class="pet-content">
+								<span>${animal.kindCd }</span>
+								<span>${animal.sexCd }</span>
+								<span>${animal.happenDt }</span>
+								<span>${animal.orgNm }</span>
+								<span>${animal.happenPlace }</span>
+							</div>
+						</div>
 					</c:forEach>
-				</select>
+				</div>
 
 			</div>
+			
 		
 		</div>
 			

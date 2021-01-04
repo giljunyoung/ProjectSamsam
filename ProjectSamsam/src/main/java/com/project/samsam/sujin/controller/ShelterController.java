@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.project.samsam.sujin.api.AnimalApiUtil;
+import com.project.samsam.sujin.api.AnimalInfo;
 import com.project.samsam.sujin.api.Sido;
+import com.project.samsam.sujin.api.Sigungu;
 
 @Controller
 @RequestMapping("/sujin")
@@ -22,6 +24,12 @@ public class ShelterController {
 		ArrayList<Sido> sido = animalUtil.getSido();
 
 		model.addAttribute("sido", sido);
+		
+		//
+		ArrayList<AnimalInfo> animalList = animalUtil.getAnimalInfo(20140601, 20140601, 417000, "notice", 1, 10, "Y");
+		
+		model.addAttribute("animalList", animalList);
+		
 
 		return "/sujin/pet_list";
 	}
@@ -31,5 +39,18 @@ public class ShelterController {
 
 		return "/sujin/shelter_list";
 	}
+	
+	
+	// 시군구 요청
+	
+	
+	
+	
 
+	
+	// 동물 정보 요청
+	
+	
+	
+	
 }

@@ -11,7 +11,7 @@ public interface AnimalApi {
 	public ArrayList<Sido> getSido() throws Exception;
 	
 	// 시/군/구
-	public StringBuilder getSiGunGu(Integer upr_cd) throws Exception;
+	public ArrayList<Sigungu> getSiGunGu(Integer upr_cd) throws Exception;
 	
 	// 보호소
 	public StringBuilder getShelter(Integer upr_cd, Integer org_cd) throws Exception;
@@ -19,6 +19,11 @@ public interface AnimalApi {
 	// 축종
 	// 축종코드 - 개 : 417000 - 고양이 : 422400 - 기타 : 429900
 	public StringBuilder getAnimalKind(Integer up_kind_cd) throws Exception;
+	
+	// 유기동물 정보
+	public ArrayList<AnimalInfo> getAnimalInfo( Integer bgnde, Integer endde, Integer upkind, String state, Integer pageNo, Integer numOfRows, String neuter_yn  ) throws Exception;
+	
+	
 	
 	
 }
