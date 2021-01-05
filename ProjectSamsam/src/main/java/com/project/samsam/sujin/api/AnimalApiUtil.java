@@ -74,7 +74,51 @@ public class AnimalApiUtil implements AnimalApi {
 
 	@Override
 	public ArrayList<Sigungu> getSiGunGu(Integer upr_cd) throws Exception {
-		return null;
+		ArrayList<String> paramNm = new ArrayList<String>();
+		ArrayList<String> paramVal = new ArrayList<String>();
+		
+		// 실제 변수로 변경할 것
+		paramNm.add("upr_cd");
+		paramVal.add(upr_cd.toString());
+		
+		StringBuilder sb = getReponse("sigungu", 2, paramNm, paramVal);
+		 // orgCd, orgdownNm 추출
+        String siGunGu = sb.toString();
+        String[] str1 = siGunGu.split("<items>");
+		String result = str1[1];
+		String[] str2 = result.split("</items>");
+		result = str2[0];
+		String[] str3 = result.split("(<\\w+>)|(</\\w+>)");
+		
+		ArrayList<Integer> orgCode = new ArrayList<Integer>();
+		ArrayList<String> orgDownNm = new ArrayList<String>();
+		ArrayList<Sigungu> siGunGuList = new ArrayList<Sigungu>();
+		
+		int cnt = 0;
+		for (int i = 0; i < str3.length; i++) {
+			if( !str3[i].equals("") ) {
+				cnt++;
+				if( cnt == 3 ) {
+					cnt = 0;
+					continue;
+				}
+				
+				// 숫자코드 인지 확인
+				if( str3[i].matches("[+-]?\\d*(\\.\\d+)?") ) {
+					orgCode.add( Integer.parseInt(str3[i]) );
+					System.out.println("코드 : " + str3[i]);
+				}
+				else {
+					orgDownNm.add(str3[i]);
+					System.out.println("이름 : " + str3[i]);
+				}
+			}
+		}
+		
+		for (int i = 0; i < orgCode.size(); i++) {
+			siGunGuList.add( new Sigungu(orgCode.get(i), orgDownNm.get(i) ) );
+		}
+		return siGunGuList;
     }
 
 	@Override
@@ -256,10 +300,18 @@ public class AnimalApiUtil implements AnimalApi {
 		StringBuilder urlBuilder = new StringBuilder(baseUrl + requestName); 
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + serviceKey);
         
-        // 
+        // 시군구 요청
+        if( requestNo == 2 ) {
+        	// &upr_cd=6110000
+        	for (int i = 0; i < paramNm.size(); i++) {
+        		urlBuilder.append("&" + URLEncoder.encode(paramNm.get(i), "UTF-8") + "=" + paramVal.get(i) ); 
+        	}
+        	
+        }
         
         // 유기동물 정보 요청
         if( requestNo == 5 ) {
+        	
         	for (int i = 0; i < paramNm.size(); i++) {
         		urlBuilder.append("&" + URLEncoder.encode(paramNm.get(i), "UTF-8") + "=" + paramVal.get(i) ); 
 			}
