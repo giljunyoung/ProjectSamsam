@@ -13,8 +13,8 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
 	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" 
+	integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" 
 	crossorigin="anonymous"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
@@ -88,6 +88,59 @@
 
 </style>
 </head>
+
+<script type="text/javascript">
+	
+	// 시/도 코드
+	sidoCode = 0;
+	
+	$(document).ready(function(){
+		console.log("ready!!!");
+	
+		
+		
+		// 시도 변경 시, 이벤트
+		$('#sido').on('change', function() {
+			sidoCode = $("#sido").val();
+			console.log(sidoCode);
+			
+			getSiGunGu();
+			
+		});
+		
+		
+		
+		
+	});
+	
+	
+	function getSiGunGu() {
+		
+		$.ajax({
+			type: "POST"
+			, url: "/sujin/SiGunGu"
+			, data: {
+				  sidoCode: sidoCode
+				}  
+			 , dataType: "html"
+			, success: function( data ){
+				console.log(data);
+				$('#sigungu-select').empty();
+				$('#sigungu-select').append(data);
+				
+			}	
+			, error: function(request, status, error){
+				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+				console.log("실패"); 
+			}
+		});
+		
+	}
+	
+	
+	
+	
+</script>
 
 <body>
 
@@ -171,12 +224,18 @@
 				</div>
 			</div>
 			
-			<select name="sido" id="sido">
-				<option value="0" selected>모든 지역</option>
-				<c:forEach var="sido" items="${sido}" varStatus="status">
-				  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
-				</c:forEach>
-			</select>
+			<div id="sido-select" class="select-box">
+				<select name="sido" id="sido">
+					<option value="0" selected>모든 지역</option>
+					<c:forEach var="sido" items="${sido}" varStatus="status">
+					  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
+					</c:forEach>
+				</select>
+			</div>
+			
+			<div id="sigungu-select" class="select-box">
+				
+			</div>
 			
 			
 			<!-- 동물 리스트 -->			

@@ -1,6 +1,7 @@
 package com.project.samsam.sujin.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +41,20 @@ public class ShelterController {
 		return "/sujin/shelter_list";
 	}
 	
-	
 	// 시군구 요청
+	@RequestMapping(value = "/SiGunGu", method = RequestMethod.POST)
+	public List<Sigungu> getSiGunGuList(Model model, int sidoCode) throws Exception{
+		
+		AnimalApiUtil animalUtil = new AnimalApiUtil();
+		
+		
+		List<Sigungu> siGunGuList = animalUtil.getSiGunGu(sidoCode);
+		model.addAttribute("sigungu", siGunGuList);
+		
+		return siGunGuList;
+	}
+	
+	// 축종 요청
 	
 	
 	
