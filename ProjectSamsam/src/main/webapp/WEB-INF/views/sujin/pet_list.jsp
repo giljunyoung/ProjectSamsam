@@ -22,6 +22,9 @@
 	crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="/resources/css/main/main.css">
+
+<!-- modal -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 
 	.tab-left, .tab-right {
@@ -45,13 +48,61 @@
 
 
 	.pet-search-option {
-		border: 1px solid black;
 	    clear: both;
-	    height: 60px;
+	    height: 65px;
+	    text-align: center;
+		border: 1px solid black;
 	}
+	
+	.pet-search-option div {
+		padding: 20px;
+	}
+	
+	.pet-search-option .condition {
+		position: absolute;
+	    right: 0;
+		cursor: pointer;
+	}
+	
+	
+	
+	
+	/* model */
 	.modal-container{
 		
 	}
+	
+	.w3-modal {
+		padding-top: 300px;
+	}
+	
+	
+	@media (min-width: 993px){
+		.w3-modal-content {
+			width: 600px;
+		}
+		
+		.w3-container, .w3-panel {
+			padding: 3.01em 16px;
+		}
+	}
+	
+	.condition-header {
+		text-align: center;
+	    padding: 20px;
+	    font-size: 24px;
+	    font-weight: bold;
+	    margin-bottom: 25px;
+	}
+	
+	.condition-btn {
+		background: #2F9D27;
+	    text-align: center;
+	    padding: 20px;
+	    font-size: 20px;
+	    color: white;
+	    cursor: pointer;
+	   }
 	
 	
 	/* 펫 리스트 */
@@ -84,7 +135,22 @@
 		padding: 8px 3px;
 	}
 	
-
+	
+	.select-box  {
+		display: inline;
+	}
+	
+	.select-box select {
+		width: 160px;
+	}
+	
+	.pet-search-option div {
+		display: inline-block;
+		
+	} 
+	
+	
+	
 
 </style>
 </head>
@@ -93,11 +159,16 @@
 	
 	// 시/도 코드
 	sidoCode = 0;
+	// 상위축종 코드
+	upKindCode = 0;
+	
+	//
+	bgnde = '', endde = '';
+	sido = '', siGunGu = '';
+	upKind = '', kind = '';
 	
 	$(document).ready(function(){
 		console.log("ready!!!");
-	
-		
 		
 		// 시도 변경 시, 이벤트
 		$('#sido').on('change', function() {
@@ -109,11 +180,40 @@
 		});
 		
 		
+		// 시도 변경 시, 이벤트
+		$('#upKind').on('change', function() {
+			upKindCode = $("#upKind").val();
+			console.log(upKindCode);
+			
+			getKind();
+			
+		});
+		
+		
+		// 검색 조건 클릭 이벤트
+		$('#condition').on('click',function() {
+			$('#modal').show();
+		});
+		
+		// 검색하기 클릭 이벤트
+		$('#condition-btn').on('click', function() {
+			bgnde = $('#bgnde').val();
+			endde = $('#endde').val();
+			sido = $('#sido').val();
+			siGunGu = $('#sigungu').val();
+			upKind = $('#upKind').val();
+			kind = $('#kind').val();
+			
+			console.log(bgnde + "," + endde+ "," + sido+ "," + siGunGu+ "," + upKind+ "," + kind)
+			
+			getAbandonment();			
+			
+		});
 		
 		
 	});
 	
-	
+	// 시군구 가져오기
 	function getSiGunGu() {
 		
 		$.ajax({
@@ -137,7 +237,61 @@
 		
 	}
 	
+	// 축종 가져오기
+	function getKind() {
+		
+		$.ajax({
+			type: "POST"
+			, url: "/sujin/animalKind"
+			, data: {
+					upKindCode: upKindCode
+				}  
+			 , dataType: "html"
+			, success: function( data ){
+				console.log(data);
+				$('#kind-select').empty();
+				$('#kind-select').append(data);
+			}	
+			, error: function(request, status, error){
+				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+				console.log("실패"); 
+			}
+		});
+		
+	}
 	
+	// 유기동물 정보 가져오기
+	function getAbandonment() {
+		
+		$.ajax({
+			type: "POST"
+			, url: "/sujin/animalInfoList"
+			, data: {
+				bgnde : bgnde,
+				endde : endde,
+				sido : sido,
+				siGunGu : siGunGu,
+				upKind : upKind,
+				kind : kind 
+				}  
+			, dataType: "html"
+			, success: function( data ){
+				// 동물리스트 초기화
+				$('.pet-list').empty();
+				
+				// 동물리스트 추가
+				$('.pet-list').append(data);
+				
+				// 모달 종료
+				$('#modal').hide();
+			}	
+			, error: function(request, status, error){
+				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+				console.log("실패"); 
+			}
+		});
+		
+	}
 	
 	
 </script>
@@ -185,18 +339,80 @@
 	<hr width=1200px;>
 	<br>
 	
+	<!-- 보호소 -->
+	
 	<!-- modal -->
 	<div class="modal-container">
-		<div class="modal"> </div>
+		<div id="modal" class="w3-modal">
+		  <div class="w3-modal-content">
+		    <div class="w3-container">
+		      <span onclick="document.getElementById('modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+		      <div class="condition-header">
+		      	<span>검색조건 설정</span>
+		      </div>
+		      
+		      <div class="condition-date">
+		      	<span>기간 :</span>
+		      	<span><input id="bgnde" type="date" name="bgnde" value="${firstDate}" /></span>
+		      	<span>~</span>
+		      	<span><input id="endde" type="date" name="endde" value="${lastDate}" /></span>
+		      </div>
+		      <hr>
+		      
+		      <div class="condition-org">
+		      	<span>지역 :</span>
+		      	<div id="sido-select" class="select-box">
+				<select name="sido" id="sido">
+						<option value="0" selected>모든 지역</option>
+						<c:forEach var="sido" items="${sido}" varStatus="status">
+						  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
+						</c:forEach>
+					</select>
+				</div>
+				
+				<div id="sigungu-select" class="select-box">
+					<select name="siGunGu" id="siGunGu">
+						<option value="0" selected>전 체</option>
+					</select>
+				</div>
+		      </div>
+		      <hr>
+		      
+		      <div class="condition-org">
+		      	<span>축종 :</span>
+		      	<div id="upkind-select" class="select-box">
+					<select name="upKind" id="upKind">
+						<option value="0" selected>모든 동물</option>
+						<option value="417000" selected>개</option>
+						<option value="422400" selected>고양이</option>
+						<option value="429900" selected>기타</option>
+					</select>
+				</div>
+				
+		      	<div id="kind-select" class="select-box">
+					<select name="kind" id="kind">
+						<option value="0" selected>전체</option>
+					</select>
+				</div>
+		      </div>
+		      <hr>
+		      
+		      <div id="condition-btn" class="condition-btn">
+		      	<span>검색하기</span>
+		      </div>
+		      
+		      
+		    </div>
+		  </div>
+		</div>
 	</div>
-
-	<!--  -->
+	
 	<div class="wrap">
 		<div class="aside">
 			<ul class="list-group list-group-flush">
-				<li class="list-group-item"><a href="/">보호소</a></li>
-				<li class="list-group-item"><a href="/">파양</a></li>
-				<li class="list-group-item"><a href="/">실종</a></li>
+				<li class="list-group-item"><a href="/sujin/pet_list">보호소</a></li>
+				<li class="list-group-item"><a href="/sujin/payang/list">파양</a></li>
+				<li class="list-group-item"><a href="/sujin/missing/list">실종</a></li>
 			</ul>
 		</div>
 
@@ -222,27 +438,16 @@
 				<div class="kind">
 					<span>모든 동물</span>
 				</div>
+				<div id="condition" class="condition">
+					<span>검색 조건</span>
+				</div>
 			</div>
-			
-			<div id="sido-select" class="select-box">
-				<select name="sido" id="sido">
-					<option value="0" selected>모든 지역</option>
-					<c:forEach var="sido" items="${sido}" varStatus="status">
-					  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
-					</c:forEach>
-				</select>
-			</div>
-			
-			<div id="sigungu-select" class="select-box">
-				
-			</div>
-			
 			
 			<!-- 동물 리스트 -->			
 
 			<div class="pet-list-wrap">
 			
-				<div class="">
+				<div class="pet-list">
 					<c:forEach var="animal" items="${animalList}" varStatus="status">
 						<div class="pet-box">
 							<div class="pet-img">

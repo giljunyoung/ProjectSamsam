@@ -13,8 +13,8 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
 	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" 
+	integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" 
 	crossorigin="anonymous"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
@@ -22,6 +22,9 @@
 	crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="/resources/css/main/main.css">
+
+<!-- modal -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 
 	.tab-left, .tab-right {
@@ -45,13 +48,61 @@
 
 
 	.pet-search-option {
-		border: 1px solid black;
 	    clear: both;
-	    height: 60px;
+	    height: 65px;
+	    text-align: center;
+		border: 1px solid black;
 	}
+	
+	.pet-search-option div {
+		padding: 20px;
+	}
+	
+	.pet-search-option .condition {
+		position: absolute;
+	    right: 0;
+		cursor: pointer;
+	}
+	
+	
+	
+	
+	/* model */
 	.modal-container{
 		
 	}
+	
+	.w3-modal {
+		padding-top: 300px;
+	}
+	
+	
+	@media (min-width: 993px){
+		.w3-modal-content {
+			width: 600px;
+		}
+		
+		.w3-container, .w3-panel {
+			padding: 3.01em 16px;
+		}
+	}
+	
+	.condition-header {
+		text-align: center;
+	    padding: 20px;
+	    font-size: 24px;
+	    font-weight: bold;
+	    margin-bottom: 25px;
+	}
+	
+	.condition-btn {
+		background: #2F9D27;
+	    text-align: center;
+	    padding: 20px;
+	    font-size: 20px;
+	    color: white;
+	    cursor: pointer;
+	   }
 	
 	
 	/* 펫 리스트 */
@@ -98,13 +149,23 @@
 		
 	} 
 	
+	
+	
 
 </style>
 </head>
+
 <script type="text/javascript">
 	
 	// 시/도 코드
 	sidoCode = 0;
+	// 상위축종 코드
+	upKindCode = 0;
+	
+	//
+	bgnde = '', endde = '';
+	sido = '', siGunGu = '';
+	upKind = '', kind = '';
 	
 	$(document).ready(function(){
 		console.log("ready!!!");
@@ -117,8 +178,42 @@
 			getSiGunGu();
 			
 		});
+		
+		
+		// 시도 변경 시, 이벤트
+		$('#upKind').on('change', function() {
+			upKindCode = $("#upKind").val();
+			console.log(upKindCode);
+			
+			getKind();
+			
+		});
+		
+		
+		// 검색 조건 클릭 이벤트
+		$('#condition').on('click',function() {
+			$('#modal').show();
+		});
+		
+		// 검색하기 클릭 이벤트
+		$('#condition-btn').on('click', function() {
+			bgnde = $('#bgnde').val();
+			endde = $('#endde').val();
+			sido = $('#sido').val();
+			siGunGu = $('#sigungu').val();
+			upKind = $('#upKind').val();
+			kind = $('#kind').val();
+			
+			console.log(bgnde + "," + endde+ "," + sido+ "," + siGunGu+ "," + upKind+ "," + kind)
+			
+			getAbandonment();			
+			
+		});
+		
+		
 	});
 	
+	// 시군구 가져오기
 	function getSiGunGu() {
 		
 		$.ajax({
@@ -141,7 +236,66 @@
 		});
 		
 	}
+	
+	// 축종 가져오기
+	function getKind() {
+		
+		$.ajax({
+			type: "POST"
+			, url: "/sujin/animalKind"
+			, data: {
+					upKindCode: upKindCode
+				}  
+			 , dataType: "html"
+			, success: function( data ){
+				console.log(data);
+				$('#kind-select').empty();
+				$('#kind-select').append(data);
+			}	
+			, error: function(request, status, error){
+				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+				console.log("실패"); 
+			}
+		});
+		
+	}
+	
+	// 유기동물 정보 가져오기
+	function getAbandonment() {
+		
+		$.ajax({
+			type: "POST"
+			, url: "/sujin/animalInfoList"
+			, data: {
+				bgnde : bgnde,
+				endde : endde,
+				sido : sido,
+				siGunGu : siGunGu,
+				upKind : upKind,
+				kind : kind 
+				}  
+			, dataType: "html"
+			, success: function( data ){
+				// 동물리스트 초기화
+				$('.pet-list').empty();
+				
+				// 동물리스트 추가
+				$('.pet-list').append(data);
+				
+				// 모달 종료
+				$('#modal').hide();
+			}	
+			, error: function(request, status, error){
+				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+				console.log("실패"); 
+			}
+		});
+		
+	}
+	
+	
 </script>
+
 <body>
 
 	<div class="header1">
@@ -171,6 +325,7 @@
 		<hr width=1200px;>
 	</div>
 
+	<!-- 메뉴 -->
 	<div class="nav">
 		<nav class="nav nav-pills flex-column flex-sm-row">
 			<a class="flex-sm-fill text-sm-center nav-link active ml-1" href="#">분양</a>
@@ -183,44 +338,112 @@
 	<br>
 	<hr width=1200px;>
 	<br>
-
-
+	
+	<!-- 보호소 -->
+	
+	<!-- modal -->
+	<div class="modal-container">
+		<div id="modal" class="w3-modal">
+		  <div class="w3-modal-content">
+		    <div class="w3-container">
+		      <span onclick="document.getElementById('modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+		      <div class="condition-header">
+		      	<span>검색조건 설정</span>
+		      </div>
+		      
+		      <div class="condition-date">
+		      	<span>기간 :</span>
+		      	<span><input id="bgnde" type="date" name="bgnde" value="${firstDate}" /></span>
+		      	<span>~</span>
+		      	<span><input id="endde" type="date" name="endde" value="${lastDate}" /></span>
+		      </div>
+		      <hr>
+		      
+		      <div class="condition-org">
+		      	<span>지역 :</span>
+		      	<div id="sido-select" class="select-box">
+				<select name="sido" id="sido">
+						<option value="0" selected>모든 지역</option>
+						<c:forEach var="sido" items="${sido}" varStatus="status">
+						  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
+						</c:forEach>
+					</select>
+				</div>
+				
+				<div id="sigungu-select" class="select-box">
+					<select name="siGunGu" id="siGunGu">
+						<option value="0" selected>전 체</option>
+					</select>
+				</div>
+		      </div>
+		      <hr>
+		      
+		      <div class="condition-org">
+		      	<span>축종 :</span>
+		      	<div id="upkind-select" class="select-box">
+					<select name="upKind" id="upKind">
+						<option value="0" selected>모든 동물</option>
+						<option value="417000" selected>개</option>
+						<option value="422400" selected>고양이</option>
+						<option value="429900" selected>기타</option>
+					</select>
+				</div>
+				
+		      	<div id="kind-select" class="select-box">
+					<select name="kind" id="kind">
+						<option value="0" selected>전체</option>
+					</select>
+				</div>
+		      </div>
+		      <hr>
+		      
+		      <div id="condition-btn" class="condition-btn">
+		      	<span>검색하기</span>
+		      </div>
+		      
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
 	<div class="wrap">
 		<div class="aside">
 			<ul class="list-group list-group-flush">
-				<li class="list-group-item"><a href="/">보호소</a></li>
-				<li class="list-group-item"><a href="/">파양</a></li>
-				<li class="list-group-item"><a href="/">실종</a></li>
+				<li class="list-group-item"><a href="/sujin/pet_list">보호소</a></li>
+				<li class="list-group-item"><a href="/sujin/payang/list">파양</a></li>
+				<li class="list-group-item"><a href="/sujin/missing/list">실종</a></li>
 			</ul>
 		</div>
 
 
 		<div class="section">
-			<!-- 검색 카테고리 탭 -->
-			<div class="tab">
-				<div class="tab-left">
-					<a href="/sujin/pet_list" alt="보호 동물">보호 동물</a>
-				</div>
-				<div class="tab-right">
-					<a href="/sujin/shelter_list" alt="보호소 찾기">보호소 찾기</a>
-				</div>
-			</div>
 			
-			<div id="sido-select" class="select-box">
-				<select name="sido" id="sido">
-					<option value="0" selected>전 체</option>
-					<c:forEach var="sido" items="${sido}" varStatus="status">
-					  <option value="${sido.sidoCode}">${sido.sidoNm}</option>
-					</c:forEach>
-				</select>
-			</div>
+			<table border="1">
+			<tr>
+				<th align="center" width="80">번호</th>
+				<th align="center" width="320">제목</th>
+				<th align="center" width="100">작성자</th>
+				<th align="center" width="180">등록일자</th>
+			</tr>
 			
-			<div id="sigungu-select" class="select-box">
-				<select name="siGunGu" id="siGunGu">
-					<option value="0" selected>전 체</option>
-				</select>
-			</div>
+			<c:if test="${empty list}">
+				<td align="center" colspan="4">
+					조회된 데이터가 없습니다.
+				</td>
+			</c:if>
+			
+			<c:forEach var="board" items="${list}" varStatus="status">
+				<td align="center" >${board.p_no}</td>
+				<td align="left"><a href="/payang/read?p_no=${board.p_no}">${board.p_subject}</a></td>                                           
+				<td align="right">${board.p_nick}</td>
+				<td align="center">${board.p_date}</td>
+			</c:forEach>
+			
+		</table>
+		
 		</div>
+			
 	</div>
 
 	<div class="footer">
