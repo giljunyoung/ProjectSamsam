@@ -18,22 +18,22 @@
 	
 	<!-- sqlSession 객체 생성 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> <!-- sqlSessionFactory로 bean 객체 생성 -->
-	<property name="dataSource" ref="dataSource" />	<!-- ref : 참조하겠다는 의미(dataSource를 참조) -->
-	<!-- name="typeAliasesPackage"
-		mybatis에서 resultType과 parameterType 사용시 bean 객체를 사용하려면 
-		패키지 경로 및 bean 클래스명까지 입력해야 한다.
-		하지만 alias 처리를 해주면 bean 클래스명만 입력하면 된다.
-	-->
-	<property name="typeAliasesPackage"		
-		value="com.project.samsam" />	<!-- 패키지 경로를 기술하면 MemberMapper.xml에서 패키지 경로를 생략하고 사용할 수 있다(MemberVO). -->
-	<!-- 
-	<property name="mapperLocations"
-		value="classpath*:/com/spring/mapper/MemberMapper.xml" //특정문서를 지정하는 방법.>
-	</property>
-	 -->
-	<!-- mapper관련 xml문서(ex: MemberMapper.xml)의 위치 지정 -->	
-	<property name="mapperLocations"	
-		value="classpath*:/com/project/mapper/**/*.xml"></property> <!-- **/*.xml: com.spring.mapper 하위의 모든 .xml문서를를 포함하겠다는 의미. -->
+		<property name="dataSource" ref="dataSource" />	<!-- ref : 참조하겠다는 의미(dataSource를 참조) -->
+		<!-- name="typeAliasesPackage"
+			mybatis에서 resultType과 parameterType 사용시 bean 객체를 사용하려면 
+			패키지 경로 및 bean 클래스명까지 입력해야 한다.
+			하지만 alias 처리를 해주면 bean 클래스명만 입력하면 된다.
+		-->
+		<property name="typeAliasesPackage"		
+			value="com.project.samsam" />	<!-- 패키지 경로를 기술하면 MemberMapper.xml에서 패키지 경로를 생략하고 사용할 수 있다(MemberVO). -->
+		<!-- 
+		<property name="mapperLocations"
+			value="classpath*:/com/spring/mapper/MemberMapper.xml" //특정문서를 지정하는 방법.>
+		</property>
+		 -->
+		<!-- mapper관련 xml문서(ex: MemberMapper.xml)의 위치 지정 -->	
+		<property name="mapperLocations"	
+			value="classpath*:/com/project/mapper/**/*.xml"></property> <!-- **/*.xml: com.spring.mapper 하위의 모든 .xml문서를를 포함하겠다는 의미. -->
 	</bean>
 	
 	<!-- sqlSession 객체를 관리하기 위해 사용 -->
@@ -44,6 +44,11 @@
 	<!-- mybatis mapper 설정 관련(사용시 Namespace 탭에서 mybatis-spring추가하기) -->
 	<!-- mapper 관련 인터페이스(ex:MamberMapper.java)를 찾기 위한 패키지 경로 설점함 -->
 	<mybatis-spring:scan base-package="com.project.mapper" />
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.project.samsam.sujin.mapper" />
+		
+	</bean>
 	
 	<!-- SMTP 설정 : https://seonjyungjo.github.io/Spring-SMTP/ -->	
 	<!-- Gmail 사용 -->

@@ -18,10 +18,11 @@ public interface AnimalApi {
 	
 	// 축종
 	// 축종코드 - 개 : 417000 - 고양이 : 422400 - 기타 : 429900
-	public StringBuilder getAnimalKind(Integer up_kind_cd) throws Exception;
+	public ArrayList<AnimalKind> getAnimalKind(Integer up_kind_cd) throws Exception;
 	
 	// 유기동물 정보
-	public ArrayList<AnimalInfo> getAnimalInfo( Integer bgnde, Integer endde, Integer upkind, String state, Integer pageNo, Integer numOfRows, String neuter_yn  ) throws Exception;
+	public ArrayList<AnimalInfo> getAnimalInfo( String bgnde, String endde, Integer upkind, String state, Integer pageNo, Integer numOfRows, String neuter_yn  ) throws Exception;
+	public ArrayList<AnimalInfo> getAnimalInfo( String bgnde, String endde,Integer upr_cd, Integer org_cd, Integer upkind, Integer kind, String state, Integer pageNo, Integer numOfRows, String neuter_yn  ) throws Exception;
 	
 	
 	
